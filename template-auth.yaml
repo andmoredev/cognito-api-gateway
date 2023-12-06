@@ -92,6 +92,8 @@ Resources:
 
   CognitoTestAutomationClient:
     Type: AWS::Cognito::UserPoolClient
+    DependsOn:
+      - TestAutomationResourceServer
     Properties:
       UserPoolId: !Ref CognitoUserPool
       GenerateSecret: true
