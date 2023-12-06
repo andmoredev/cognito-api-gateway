@@ -1,0 +1,61 @@
+name: Deploy Auth Stack
+run-name: Deploy Auth Stack to ${{ inputs.ENVIRONMENT }}
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      ENVIRONMENT:
+          type: choice
+          options:
+            - sandbox
+
+concurrency:
+  group: ${{ github.ref_name }}
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-auth:
+    name: Deploy Auth Stack
+    runs-on: ubuntu-latest
+    # environment: ${{ inputs.ENVIRONMENT }}
+    environment: sandbox
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{ vars.PIPELINE_EXECUTION_ROLE }}
+          role-session-name: besta-auth-deploy
+          role-duration-seconds: 3600
+          role-skip-session-tagging: true
+
+      - name: Replace Variables in samconfig
+        run: |
+          npm i -g replace-in-files-cli
+          replace-in-files --string='{{GoogleClientId}}' --replacement='${{ vars.GOOGLE_IDP_CLIENTID }}' ./samconfig.ci.toml
+          replace-in-files --string='{{GoogleClientSecret}}' --replacement='${{ secrets.GOOGLE_IDP_CLIENTSECRET }}' ./samconfig.ci.toml
+          cat ./samconfig.ci.toml
+          ls
+
+      - name: SAM Build and Deploy
+        run: |
+          sam --info
+          ls
+          sam build \
+          --config-file samconfig.ci.toml \
+          --config-env auth \
+          --template template-auth.yaml
+
+          sam deploy \
+          --config-file samconfig.ci.toml \
+          --config-env auth \
+          --template template-auth.yaml
+          --s3-bucket ${{ vars.ARTIFACTS_BUCKET_NAME }} \
+          --no-fail-on-empty-changeset \
+          --role-arn ${{ vars.CLOUDFORMATION_EXECUTION_ROLE }}
