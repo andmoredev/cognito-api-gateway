@@ -61,6 +61,8 @@ Resources:
 
   CognitoUserPoolClient:
     Type: AWS::Cognito::UserPoolClient
+    DependsOn:
+      - CognitoUserPoolIdentityProvider
     Properties:
       UserPoolId: !Ref CognitoUserPool
       AllowedOAuthFlows:
