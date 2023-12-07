@@ -109,3 +109,5 @@ Outputs:
   CognitoUserPoolArn:
     Description: User pool arn
     Value: !GetAtt CognitoUserPool.Arn
+    Export:
+      Name: CognitoUserPoolArn
