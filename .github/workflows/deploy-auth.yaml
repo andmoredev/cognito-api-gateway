@@ -52,9 +52,9 @@ jobs:
           --template template-auth.yaml
 
           sam deploy \
+          --template-file .aws-sam/build/template.yaml \
           --config-file samconfig.ci.toml \
           --config-env auth \
-          --template-file .aws-sam/build/template.yaml \
           --s3-bucket ${{ vars.ARTIFACTS_BUCKET_NAME }} \
           --no-fail-on-empty-changeset \
           --role-arn ${{ vars.CLOUDFORMATION_EXECUTION_ROLE }}
