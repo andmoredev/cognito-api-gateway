@@ -17,11 +17,10 @@ permissions:
   contents: read
 
 jobs:
-  deploy-auth:
-    name: Deploy Auth Stack
+  deploy:
+    name: Deploy
     runs-on: ubuntu-latest
-    # environment: ${{ inputs.ENVIRONMENT }}
-    environment: sandbox
+    environment: ${{ inputs.ENVIRONMENT }}
     steps:
       - uses: actions/checkout@v3
 

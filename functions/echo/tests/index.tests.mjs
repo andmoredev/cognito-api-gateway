@@ -1,7 +1,6 @@
 
-const app = require('../index');
-const { expect } = require('chai');
-const { logger } = require('../../../layers/lambda-powertools/lambda-powertools');
+import * as app from '../index.mjs';
+import { expect } from 'chai';
 
 describe('Echo', () => {
   describe('handler', () => {
@@ -23,9 +22,5 @@ describe('Echo', () => {
       const body = JSON.parse(response.body);
       expect(body).to.have.property('message', 'Something went wrong!');
     });
-  });
-
-  before(() => {
-    logger.error = () => { };
   });
 });
