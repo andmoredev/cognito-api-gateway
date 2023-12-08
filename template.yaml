@@ -25,7 +25,6 @@ Resources:
     DeletionPolicy: Delete
     UpdateReplacePolicy: Delete
     Properties:
-      UserPoolName: CognitoUserPool
       UsernameAttributes:
         - email
       AutoVerifiedAttributes:
