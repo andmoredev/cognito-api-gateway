@@ -11,6 +11,14 @@ Parameters:
     Type: String
     NoEcho: true
 
+Globals:
+  Function:
+    Timeout: 10
+    Runtime: nodejs18.x
+    MemorySize: 768
+    Handler: index.handler
+    Tracing: Active
+
 Resources:
   CognitoUserPool:
     Type: AWS::Cognito::UserPool
@@ -113,8 +121,7 @@ Resources:
         DefaultAuthorizer: ClientCognitoAuthorizer
         Authorizers:
           ClientCognitoAuthorizer:
-            UserPoolArn: !ImportValue
-              Fn::Sub: ${AuthStackName}-CognitoUserPoolArn
+            UserPoolArn: !Ref CognitoUserPool
             AuthorizationScopes:
               - openid
               - email
@@ -130,8 +137,6 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: functions/echo
-      Layers:
-        - !Ref ApiGatewayLayer
       Events:
         LoginEvent:
           Type: Api
