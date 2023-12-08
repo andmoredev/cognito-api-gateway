@@ -5,22 +5,11 @@ version = 0.1
 cached="true"
 parallel="true"
 
-[auth.deploy.parameters]
-stack_name = "besta-api-auth"
+[default.deploy.parameters]
+stack_name = "cognito-api-gateway"
 capabilities = "CAPABILITY_IAM"
 parameter_overrides = [
   "GoogleClientId={{GoogleClientId}}",
   "GoogleClientSecret={{GoogleClientSecret}}"
-]
-
-[api.deploy.parameters]
-stack_name = "{{StackName}}"
-capabilities = "CAPABILITY_IAM"
-parameter_overrides = [
-  "DBHost={{DBHost}}",
-  "DBUser={{DBUser}}",
-  "DBPassword={{DBPassword}}",
-  "DBPort={{DBPort}}",
-  "DBDatabase={{DBDatabase}}"
 ]
 image_repositories = []
