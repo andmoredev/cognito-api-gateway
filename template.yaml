@@ -105,9 +105,48 @@ Resources:
         - automation/portman
       AllowedOAuthFlowsUserPoolClient: true
 
+  API:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: api
+      Auth:
+        DefaultAuthorizer: ClientCognitoAuthorizer
+        Authorizers:
+          ClientCognitoAuthorizer:
+            UserPoolArn: !ImportValue
+              Fn::Sub: ${AuthStackName}-CognitoUserPoolArn
+            AuthorizationScopes:
+              - openid
+              - email
+              - profile
+              - automation/portman
+      DefinitionBody:
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: ./openapi.yaml
+
+  EchoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/echo
+      Layers:
+        - !Ref ApiGatewayLayer
+      Events:
+        LoginEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref API
+            Path: /echo
+            Method: POST
+      Policies:
+        - AWSLambdaBasicExecutionRole
+
 Outputs:
-  CognitoUserPoolArn:
-    Description: User pool arn
-    Value: !GetAtt CognitoUserPool.Arn
-    Export:
-      Name: CognitoUserPoolArn
+  CongnitoUserPoolURL:
+    Description: URI to be used to setup external federated IDPs
+    Value: !Sub https://${CognitoUserPoolDomain}.auth.${AWS::Region}.amazoncognito.com
+
+  ApiURL:
+    Description: API URL
+    Value: !Sub https://${API}.execute-api.${AWS::Region}.amazonaws.com/api
