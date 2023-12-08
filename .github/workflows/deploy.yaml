@@ -43,6 +43,7 @@ jobs:
 
       - name: SAM Build and Deploy
         run: |
+          npm install -g esbuild
           sam --info
           ls
           sam build \
