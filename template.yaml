@@ -145,6 +145,16 @@ Resources:
             Method: POST
       Policies:
         - AWSLambdaBasicExecutionRole
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: false
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - index.mjs
+        Loader:
+          - .mjs=file
 
 Outputs:
   CongnitoUserPoolURL:
