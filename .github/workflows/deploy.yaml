@@ -1,5 +1,5 @@
-name: Deploy Auth Stack
-run-name: Deploy Auth Stack to ${{ inputs.ENVIRONMENT }}
+name: Deploy
+run-name: Deploy to ${{ inputs.ENVIRONMENT }}
 
 on:
   workflow_dispatch:
@@ -30,7 +30,7 @@ jobs:
         with:
           aws-region: us-east-1
           role-to-assume: ${{ vars.PIPELINE_EXECUTION_ROLE }}
-          role-session-name: besta-auth-deploy
+          role-session-name: sam-deploy
           role-duration-seconds: 3600
           role-skip-session-tagging: true
 
