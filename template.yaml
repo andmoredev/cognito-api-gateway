@@ -120,7 +120,7 @@ Resources:
         DefaultAuthorizer: ClientCognitoAuthorizer
         Authorizers:
           ClientCognitoAuthorizer:
-            UserPoolArn: !Ref CognitoUserPool
+            UserPoolArn: !GetAtt CognitoUserPool.Arn
             AuthorizationScopes:
               - openid
               - email
