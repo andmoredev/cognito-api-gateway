@@ -148,9 +148,12 @@ Resources:
     Metadata:
       BuildMethod: esbuild
       BuildProperties:
+        Format: esm
         Minify: false
-        Sourcemap: false
+        OutExtension:
+          - .js=.mjs
         Target: "es2020"
+        Sourcemap: false
         EntryPoints:
           - index.mjs
         Loader:
