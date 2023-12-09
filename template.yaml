@@ -155,7 +155,7 @@ Resources:
         Target: "es2020"
         Sourcemap: false
         EntryPoints:
-          - index.mjs
+          - functions/echo/index.mjs
         Loader:
           - .mjs=file
 
