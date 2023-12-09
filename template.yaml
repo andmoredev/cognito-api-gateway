@@ -153,7 +153,7 @@ Resources:
         OutExtension:
           - .js=.mjs
         Target: es2020
-        Sourcemap: true
+        Sourcemap: false
         EntryPoints:
           - echo/index.mjs
         Banner:
