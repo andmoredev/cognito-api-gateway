@@ -16,7 +16,6 @@ Globals:
     Timeout: 10
     Runtime: nodejs18.x
     MemorySize: 768
-    Handler: index.handler
     Tracing: Active
 
 Resources:
@@ -135,7 +134,8 @@ Resources:
   EchoFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: functions/echo
+      CodeUri: functions
+      Handler: echo.handler
       Events:
         LoginEvent:
           Type: Api
@@ -152,12 +152,12 @@ Resources:
         Minify: false
         OutExtension:
           - .js=.mjs
-        Target: "es2020"
-        Sourcemap: false
+        Target: es2020
+        Sourcemap: true
         EntryPoints:
-          - index.mjs
-        Loader:
-          - .mjs=file
+          - echo.mjs
+        Banner:
+          - js=import { createRequire } from 'module'; const require = createRequire(import.meta.url);
 
 Outputs:
   CongnitoUserPoolURL:

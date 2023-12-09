@@ -1,4 +1,4 @@
-import { initializePowertools } from '../../shared/lambda-powertools.mjs';
+import { initializePowertools } from './shared/lambda-powertools.mjs';
 
 export const handler = initializePowertools(async (event, context) => {
   try {
